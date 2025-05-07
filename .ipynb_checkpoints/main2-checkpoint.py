@@ -1,0 +1,127 @@
+import requests
+from pptx import Presentation
+
+# Set up your API details
+url = "https://rattle-rm-reporting-hub.prod.crto.in/pivot_report/api/paid"
+
+headers = {
+    "accept": "*/*",
+    "content-type": "application/json",
+    "origin": "https://rattle-rm-reporting-hub.prod.crto.in",
+    "referer": "https://rattle-rm-reporting-hub.prod.crto.in/pivot_report/pivot/",
+    "cookie": "_ga=GA1.1.604358013.1708096317; _hjSessionUser_3428851=eyJpZCI6IjhlNTFlOTcwLWE5NjctNTQ3My05N2UxLTAzOTA2NGVlZWM3ZCIsImNyZWF0ZWQiOjE3MzgwMTg2MDc3NjIsImV4aXN0aW5nIjp0cnVlfQ==; ajs_user_id=425424; ajs_anonymous_id=f38bf151-f8e2-40c1-8f77-d7704837fe1d; amplitude_idundefinedcrto.in=eyJvcHRPdXQiOmZhbHNlLCJzZXNzaW9uSWQiOm51bGwsImxhc3RFdmVudFRpbWUiOm51bGwsImV2ZW50SWQiOjAsImlkZW50aWZ5SWQiOjAsInNlcXVlbmNlTnVtYmVyIjowfQ==; amplitude_id_339b32621c58a6ab1ad15e35ec90742fcrto.in=eyJkZXZpY2VJZCI6Ijg5ZGJhYWNiLTA4NDUtNGFjNC1iOWFjLTUzYzkzZWYxNGM2YlIiLCJ1c2VySWQiOiI0MjU0MjQiLCJvcHRPdXQiOmZhbHNlLCJzZXNzaW9uSWQiOjE3NDM2MjIxMDYyMDgsImxhc3RFdmVudFRpbWUiOjE3NDM2MjIxMTI0OTIsImV2ZW50SWQiOjQyLCJpZGVudGlmeUlkIjoxMSwic2VxdWVuY2VOdW1iZXIiOjUzfQ==; _ga_YJMCDYV8GD=GS1.1.1746036937.291.0.1746036937.0.0.0; session=.eJytVF1v0zAU_StRnvuVrO1g2hBp2m1llHaNCmyaFHnOTeLWsYPttA1o_53rjLEOifHCk31Prs899ys_XLkxJK40qJiJVLonP1woCOPuibvugNAc6vdUMQOyQ2XhttyUKW1iQQpAlw-EbrQUCHPyjE6aZwi-9HJ-41WhY5a4J31_0Pf7-FhmTBxEdB9aj7qoTCDegmIpA4UOOz-HwagO9mMRfSyEPJ_UV3Q2zhbB2-PLLyVNBzcflnSnjuX11c1uPRzUKoqre8_ofm--n-1vp347jb_GX5Yr0x8uhtl9LjPP87NNNDoaJuLiVpe7ILspw8n18PO1dzH_drUrd5fnl8F2f_l9jdqV5DanYIJ3KEoua4DXk8GaVZzHfysG0zFJCvskJVxD6x_1Z4IZRnickBp9_J7vt3vDtu8dyuGwBWR40-m1XCorYZT1XUVWPmRMWnnBbLKchoHFEiiJMgUIg_hCsS0x4MyI2oBxIsJBoyFIBo1Hyy3IPk50-RRFYHIttwRVMK2RW9sZ6iNTBDx1IlBbcCY2JWcJpVSWYWDjzJ7tIdrL2cJZEMpEhsBbBEYgaF6gCrS9HgLjaOGMic7vJVGJBT0b5E_Qt7nRJmsn4KDMI6N3ZCnno7m9W3VToVmWG23tRg_bSvMsyWs0gUHdoJyAGrZlpnaiqkBJtTNJWOP15iDaZwY7i1nxISllZZzVFAHfitdya6daxE13Y9XEwVL5FiO_dMZGSo6gh21rev5yMV-di8Q2Nfx09vS1NV-dnbNihQS6NQ7PKpKUSib2-nRSZaQ9mV1gKv6yqdOD2a7soL9Y04O-xzQHugH0MKoCO2qEmpgVvzJ1TzUKLo2TQArq7M5tzjvXMXUJaBYyqTigrRVFs6sNMYx2G5Yu0RqM7jKRwL4drvPrY3PU7qz1nfvutPvI--5_8XdAt8Pl8GO1Ow7_f4iywr9ZbWOQdkjq78HVnzE4ExsnV5C-XoVxdDutYHTRoRrfOwo4-mtT477mAAYp3Yefkc3y2w.aBJoyg.MdHjFzErt3TyRzbuZqYyBjA7g2Y"
+}
+
+# Template for your payload
+base_payload = {
+    "retailers": ["906"],
+    "accounts": [],
+    "private-market": [],
+    "countries": [],
+    "dimensions": ["retailer", "lineItem"],
+    "columns": "",
+    "rsxRmp": ["RMP"],
+    "metrics": ["impressions", "clicks", "spend", "sales", "units", "CPC Demand", "ROAS Demand"],
+    "timezone": "UTC",
+    "currency": "Default",
+    "rsxCampaigns": [],
+    "rmpCampaigns": [123952],
+    "lineItemFilter": [457160,457169],
+    "globalAccountFilter": [],
+    "campaignType": [1, 2],
+    "saleType": ["online", "offline"],
+    "attrWindow": "campaign_default",
+    "attrLevelClick": "campaign_default",
+    "attrLevelImp": "campaign_default",
+    "attrRsxLevel": ["Default"],
+    "environment": [],
+    "pageType": [],
+    "topKeywordFilter": None,
+    "topKeywordMetric": "impressions",
+    "keywordFilter": [],
+    "sspNetwork": [],
+    "skuType": "retailer_sku_key",
+    "skuFilter": [],
+    "productCategoryLike": "",
+    "productCategoryLevel": 1,
+    "retailerProductCategory": [],
+    "productCategory": [],
+    "parentCategoryAgg": True,
+    "isLockout": "",
+    "isManaged": "",
+    "optOut": "",
+    "agency": [],
+    "accountStrategist": [],
+    "salesRepresentative": [],
+    "campaignManager": [],
+    "download": False,
+    "query": False
+}
+
+# Function to replace text while preserving formatting
+def replace_text_in_shape(shape, replacements):
+    if not shape.has_text_frame:
+        return
+    for paragraph in shape.text_frame.paragraphs:
+        for run in paragraph.runs:
+            for key, value in replacements.items():
+                if key in run.text:
+                    run.text = run.text.replace(key, value)
+
+# Function to fill in an existing slide with data
+def fill_slide(prs, slide_index, start_date, end_date):
+    payload = base_payload.copy()
+    payload["start_date"] = start_date
+    payload["end_date"] = end_date
+
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code != 200:
+        print(f"Request failed with status {response.status_code}")
+        print(response.text)
+        return
+
+    data = response.json().get("data", [])
+
+    # Default summary (e.g., campaign-level) - still uses the first row
+    default_row = data[0] if data else {}
+
+    snapshot_date = f"{start_date} - {end_date}"
+    replacements = {
+        "{{name}}": default_row.get("retailer_name", "Unknown"),
+        "{{impressions}}": f"{default_row.get('impressions', 0):,}",
+        "{{clicks}}": f"{default_row.get('clicks', 0):,}",
+        "{{spend}}": f"${int(default_row.get('spend', 0)):,}",
+        "{{sales}}": f"${int(default_row.get('sales', 0)):,}",
+        "{{units}}": f"{default_row.get('units', 0):,}",
+        "{{ROAS}}": f"${default_row.get('ROAS Demand', 0):,.2f}",
+        "{{CPC}}": f"${default_row.get('CPC Demand', 0):,.2f}",
+        "{{snapshot date}}": snapshot_date,
+    }
+
+    for idx, line_item_row in enumerate(data[:2], start=1):
+        replacements[f"{{impressions_lineitem_{idx}}}"] = f"{line_item_row.get('impressions', 0):,}"
+        replacements[f"{{{{clicks_lineitem_{idx}}}}}"] = f"{line_item_row.get('clicks', 0):,}"
+        replacements[f"{{{{spend_lineitem_{idx}}}}}"] = f"${int(line_item_row.get('spend', 0)):,}"
+        replacements[f"{{{{sales_lineitem_{idx}}}}}"] = f"${int(line_item_row.get('sales', 0)):,}"
+        replacements[f"{{{{units_lineitem_{idx}}}}}"] = f"{line_item_row.get('units', 0):,}"
+        replacements[f"{{{{ROAS_lineitem_{idx}}}}}"] = f"${line_item_row.get('ROAS Demand', 0):,.2f}"
+        replacements[f"{{{{CPC_lineitem_{idx}}}}}"] = f"${line_item_row.get('CPC Demand', 0):,.2f}"
+        replacements[f"{{{{name_lineitem_{idx}}}}}"] = line_item_row.get("lineItem", f"LineItem {idx}")
+
+    # Replace text on the slide
+    slide = prs.slides[slide_index]
+    for shape in slide.shapes:
+        print("Replacements:", replacements)
+        replace_text_in_shape(shape, replacements)
+
+# Load presentation template
+prs = Presentation("template.pptx")
+
+# Fill existing slides with different date ranges
+fill_slide(prs, 0, "2025-03-01", "2025-03-31")
+fill_slide(prs, 1, "2025-02-01", "2025-02-28")
+fill_slide(prs, 2, "2025-02-01", "2025-02-28")
+
+# Save updated deck
+prs.save("output.pptx")
+print("Presentation updated successfully.")
